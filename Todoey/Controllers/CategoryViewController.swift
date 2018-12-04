@@ -11,7 +11,9 @@ import RealmSwift
 
 class CategoryViewController: UITableViewController {
     
+    //Initialize realm
     let realm = try! Realm()
+    // categories was an array and now is a collection of results of your category object
     var categories : Results<Category>?
     
     override func viewDidLoad() {
@@ -22,6 +24,7 @@ class CategoryViewController: UITableViewController {
     
     //MARK: - TableView Datasource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // return the categories.count and if there's no categories return 1
         return categories?.count ?? 1
     }
 
@@ -34,6 +37,7 @@ class CategoryViewController: UITableViewController {
     //MARK: - TableView Delegate Methods
     // what should happen if I click to a category
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // takes you to the todolistcontroller of the selected category
         performSegue(withIdentifier: "goToItems", sender: self)
     }
     
@@ -47,8 +51,9 @@ class CategoryViewController: UITableViewController {
     //MARK: - Data Manipulation Methods
     func save(category : Category){
         do {
-            // Trying to save context
+            // Commit changes to realm
             try realm.write {
+                // add similar to append
                 realm.add(category)
             }
         } catch {
@@ -58,6 +63,7 @@ class CategoryViewController: UITableViewController {
     }
 
     func loadCategories() {
+        //look inside realm all our categories
         categories = realm.objects(Category.self)
         tableView.reloadData()
     }
@@ -70,7 +76,6 @@ class CategoryViewController: UITableViewController {
         let alert = UIAlertController(title: "Add New Todoey Category", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add Category", style: .default) { (action) in
             // What will happen once the user click the ADD ITEM button on our UIAlert
-            // Creating a new NSObject inside context
             let newCategory = Category()
             newCategory.name = textField.text!
             // Saving

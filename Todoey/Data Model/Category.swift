@@ -9,7 +9,8 @@
 import Foundation
 import RealmSwift
 
-class Category: Object {
+class Category : Object {
     @objc dynamic var name : String = ""
+    // items is a relationship which means that a category can have items
     let items = List<Item>()
 }
